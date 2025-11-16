@@ -1,4 +1,26 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/fileStorage
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      MINIO_CLIENT_ENDPOINT: http://minio:9000
+      MINIO_CLIENT_ACCESS_KEY: user
+      MINIO_CLIENT_SECRET_KEY: password
+      MINIO_BUCKET_NAME: user-files
+    depends_on:
+      - mysql
+      - minio
+      - redis
+
   mysql:
     image: mysql:latest
     restart: always
